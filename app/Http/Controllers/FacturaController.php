@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Factura;
+use App\Models\Producto;
 
 class FacturaController extends Controller
 {
@@ -14,7 +15,7 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $facturas=Factura::all();
+        $facturas=Factura::paginate(10);
         return view('lista',compact('facturas'));
     }
 
@@ -59,8 +60,8 @@ class FacturaController extends Controller
     public function edit($num)
     {
         $factura=Factura::find($num);
-       
-        return view('factura',['factura'=>$factura]);
+        $productos=Producto::all();
+        return view('factura',['factura'=>$factura,'productos'=>$productos]);
     }
 
     /**

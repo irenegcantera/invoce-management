@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Home')
+@section('title','Dashboard')
     
 @section('content')
     <h1>APLICACIÓN DE GESTIÓN</h1>

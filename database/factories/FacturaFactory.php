@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FacturaFactory extends Factory
@@ -22,7 +23,9 @@ class FacturaFactory extends Factory
             'cpostal'=>$this->faker->numerify('#####'),
             'telefono'=>$this->faker->phoneNumber(),
             'fecha'=>$this->faker->date(),
-            
+            'cliente_id'=>function(){
+                return Cliente::factory()->create()->id;
+            }
         ];
     }
 }
