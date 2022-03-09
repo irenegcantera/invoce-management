@@ -53,41 +53,83 @@
                 <input class="btn btn-success btn-sm fw-bold" type='submit' name="Actualizar" value='Actualizar'/><br>
             </form>
             <br>
-            <form action="{{route('lineas.store')}}" method="post" id="form_linea">
-                @csrf
-                <input type="hidden" name='factura_numero' size="50" value={{$factura->numero}}/>
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="form-label fw-bold" for="producto_id">Producto</label>
-                        <select class="form-control form-control-sm" name='producto_id' id='producto_id' >
-                            <option value="0" selected>Elige un producto</option>
-                            @foreach ($productos as $producto)
-                                <option value="{{$producto->id}}">{{$producto->nombre}}</option>
-                            @endforeach
-                        </select>
+
+            @if(!empty($lineaEdit))
+                <form action="{{route('lineas.update', $lineaEdit)}}" method="post" id="form_linea">
+                    @csrf
+                    @method('put')
+                    <input type="hidden" name='factura_numero' size="50" value="{{$factura->numero}}"/>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="producto_id">Producto</label>
+                            <select class="form-control form-control-sm" name='producto_id' id='producto_id' >
+                                <option value="0" selected>Elige un producto</option>
+                                @foreach ($productos as $producto)
+                                    @if($producto->id == $lineaEdit->producto_id)
+                                        <option value="{{$producto->id}}" selected>{{$producto->nombre}}</option>
+                                    @else
+                                        <option value="{{$producto->id}}">{{$producto->nombre}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="form-label fw-bold" for="cantidad">Cantidad</label>
-                        <input class="form-control form-control-sm" type="text" name='cantidad' id='cantidad' value="1"/>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="cantidad">Cantidad</label>
+                            <input class="form-control form-control-sm" type="text" name='cantidad' id='cantidad' value="{{ $lineaEdit->cantidad }}"/>
+                        </div>
+                        <div class="col">  
+                            <label class="form-label fw-bold" for="precio">Precio</label>
+                            <input class="form-control form-control-sm" type="text" name='precio' id="precio" value="{{ $lineaEdit->precio }}"/>
+                        </div>
                     </div>
-                    <div class="col">  
-                        <label class="form-label fw-bold" for="precio">Precio</label>
-                        <input class="form-control form-control-sm" type="text" name='precio' id="precio" value=""/>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="descripcion">Descripción</label>
+                            <input class="form-control form-control-sm" type="text" name='descripcion' id='descripcion' value="{{ $lineaEdit->producto }}"/>
+                        </div>
                     </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col">
-                        <label class="form-label fw-bold" for="descripcion">Descripción</label>
-                        <input class="form-control form-control-sm" type="text" name='descripcion' id='descripcion' value=""/>
+                    <input class="btn btn-outline-warning btn-sm fw-bold" type='submit' name="Guardar" value='Guardar'/><br>
+                </form>
+            @else
+                <form action="{{route('lineas.store')}}" method="post" id="form_linea">
+                    @csrf
+                    <input type="hidden" name='factura_numero' size="50" value="{{$factura->numero}}"/>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="producto_id">Producto</label>
+                            <select class="form-control form-control-sm" name='producto_id' id='producto_id' >
+                                <option value="0" selected>Elige un producto</option>
+                                @foreach ($productos as $producto)
+                                    <option value="{{$producto->id}}">{{$producto->nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <input class="btn btn-outline-success btn-sm fw-bold" type='submit' name="Añadir" value='Añadir'/><br>
-            </form>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="cantidad">Cantidad</label>
+                            <input class="form-control form-control-sm" type="text" name='cantidad' id='cantidad' value="1"/>
+                        </div>
+                        <div class="col">  
+                            <label class="form-label fw-bold" for="precio">Precio</label>
+                            <input class="form-control form-control-sm" type="text" name='precio' id="precio" value=""/>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label class="form-label fw-bold" for="descripcion">Descripción</label>
+                            <input class="form-control form-control-sm" type="text" name='descripcion' id='descripcion' value=""/>
+                        </div>
+                    </div>
+                    <input class="btn btn-outline-success btn-sm fw-bold" type='submit' name="Añadir" value='Añadir'/><br>
+                </form>
+            @endif
         </div>
+
         <div class="col-xl-6">
-            <br><br>
+            <br>
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
@@ -95,6 +137,7 @@
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Importe</th>
+                        <th colspan="2">Acciones</th>
                     </tr>
                 </thead>
                 @foreach ($factura->lineas as $linea)
@@ -103,6 +146,21 @@
                         <td>{{$linea->cantidad}}</td>
                         <td>{{$linea->precio}}</td>
                         <td>{{$linea->cantidad*$linea->precio}}</td>
+                        <td>
+                            <form action="{{ route('lineas.edit', $linea) }}" method="get">
+                                @csrf
+                                @method('put')
+                                <input type="hidden" name='edit' size="50" value="true"/>
+                                <button type="submit" class="btn btn-warning btn-sm fw-bold">Editar</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ route('lineas.destroy', $linea) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger btn-sm fw-bold">Eliminar</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </table>
