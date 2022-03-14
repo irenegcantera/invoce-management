@@ -128,15 +128,16 @@
             @endif
         </div>
 
-        <div class="col-xl-6">
-            <br>
+        <div class="col-xl-7">
+            <a class="btn btn-secondary btn-sm fw-bold" href="{{ route('facturas.index') }}">Volver al listado</a>
+            <br><br>
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
                         <th>Producto</th>
                         <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Importe</th>
+                        <th>Precio €</th>
+                        <th>Importe €</th>
                         <th colspan="2">Acciones</th>
                     </tr>
                 </thead>
@@ -144,7 +145,7 @@
                     <tr>
                         <td>{{$linea->producto}}</td>
                         <td>{{$linea->cantidad}}</td>
-                        <td>{{$linea->precio}}</td>
+                        <td>{{$linea->precio}} €</td>
                         <td>{{$linea->cantidad*$linea->precio}}</td>
                         <td>
                             <form action="{{ route('lineas.edit', $linea) }}" method="get">
@@ -163,6 +164,14 @@
                         </td>
                     </tr>
                 @endforeach
+                <tfoot class="fw-bold">
+                    <tr>
+                        <td>TOTAL FACTURA</td>
+                        <td colspan="2">IVA 21%</td>
+                        <td>{{ $factura->getImporteTotal() + ($factura->getImporteTotal()*021) }} €</td>
+                    </tr>
+                </tfoot>
+                
             </table>
         </div>
     </div>    

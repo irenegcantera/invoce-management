@@ -25,11 +25,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home')->middleware('auth');
+})->middleware('auth')->name('home');
 
 Route::resource('facturas',FacturaController::class)->middleware('auth');
 Route::resource('lineas',LineaController::class)->middleware('auth');
 Route::post('ajax/productos',[AjaxController::class,'producto'])->middleware('auth')->name('ajax.producto');
+Route::post('ajax/clientes',[AjaxController::class,'cliente'])->middleware('auth')->name('ajax.cliente');
 
 //RUTAS PRODUCTOS, FAMILIAS, CLIENTES
 Route::resource('productos',ProductoController::class)->middleware('auth');

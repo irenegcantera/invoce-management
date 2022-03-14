@@ -15,7 +15,7 @@ class FacturaFactory extends Factory
     public function definition()
     {
         return [
-            'numero'=>$this->faker->unique()->numberBetween(1,100),
+            // 'numero'=>$this->faker->unique()->numberBetween(1,100),
             'nombre'=>$this->faker->sentence(),
             'direccion'=>$this->faker->sentence(),
             'poblacion'=>$this->faker->word(),

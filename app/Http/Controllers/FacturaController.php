@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\Factura;
 use App\Models\Producto;
@@ -26,7 +27,8 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        //
+        $clientes = Cliente::all();
+        return view('create',compact('clientes'));
     }
 
     /**
@@ -79,11 +81,12 @@ class FacturaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Factura $factura
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Factura $factura)
     {
-        //
+        $factura->delete();
+        return redirect()->back();
     }
 }

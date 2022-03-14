@@ -10,6 +10,11 @@
 <body>
     <div class="container mt-4">
         <h3>Registro usuario</h3>
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ (session('error')) }}
+            </div>
+        @endif
         <br>
         <form class="row g-3" action='{{ route('register.store') }}' method='post'>
             @csrf
@@ -31,6 +36,9 @@
                 <label for="password_confirmed" class="form-label">Repetir Password</label>
                 <input type="password" class="form-control" name="password_confirmed" id="password_confirmed">
             </div>
+            @error('password_confirmed')
+                <p>{{ $message }}</p>
+            @enderror
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" name="email" id="email">

@@ -28,25 +28,19 @@
                 <td>{{ $factura->fecha }}</td>
                 <td>{{ $factura->nombre }}</td>
                 <td>{{ $factura->getImporteTotal() }} €</td>
-                {{-- <td>
-                    <form action="{{ route('productos.show', $producto) }}" method="get">
-                        @csrf
-                        <button type="submit" class="btn btn-info btn-sm fw-bold">Info</button>
-                    </form>
-                </td> --}}
                 <td>
                     <form action="{{ route('facturas.edit', $factura) }}" method="get">
                         @csrf
                         <button type="submit" class="btn btn-warning btn-sm fw-bold">Editar</button>
                     </form>
                 </td>
-                {{-- <td>
-                    <form action="{{ route('productos.destroy', $producto) }}" method="post">
+                <td>
+                    <form action="{{ route('facturas.destroy', $factura) }}" method="post">
                         @csrf
                         @method('delete')
                         <button type="submit" class="btn btn-danger btn-sm fw-bold">Eliminar</button>
                     </form>
-                </td> --}}
+                </td>
             </tr>
         @endforeach
     </table>

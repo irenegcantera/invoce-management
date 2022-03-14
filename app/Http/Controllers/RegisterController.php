@@ -36,6 +36,12 @@ class RegisterController extends Controller
             'email'=>'required|email',
             'password'=>'required',
         ]);
+        
+        // $userRegistered = User::where('email','=',$request->get('email'))
+        //                        ->orWhere('name','=',$request->get('name'));
+        // if($userRegistered){
+        //     return redirect()->route('register.create')->with('error','Email o usuario ya registrado.');
+        // }
 
         $user=User::create([
             'name'=>$request->get('name'),

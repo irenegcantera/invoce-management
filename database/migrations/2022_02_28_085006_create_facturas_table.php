@@ -14,7 +14,7 @@ class CreateFacturasTable extends Migration
     public function up()
     {
         Schema::create('facturas', function (Blueprint $table) {
-            $table->integer('numero')->primary();
+            $table->bigIncrements('numero');
             $table->date('fecha');
             $table->string('nombre');
             $table->string('direccion')->nullable();
