@@ -15,10 +15,10 @@ class FamiliaSeeder extends Seeder
      */
     public function run()
     {
-        Familia::factory(20)->create();
+        Familia::factory(15)->create();
         $familias=Familia::all('id');
-        for ($i = 0; $i < 150; $i++){
-            Producto::factory(1)->create(['familia_id'=>$familias[random_int(0,19)]]);
+        for ($i = 0; $i < 25; $i++){
+            Producto::factory(1)->create(['familia_id'=>$familias[random_int(0,14)]]);
         }
     }
 }

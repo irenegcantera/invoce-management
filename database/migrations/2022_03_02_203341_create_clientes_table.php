@@ -23,6 +23,7 @@ class CreateClientesTable extends Migration
             $table->string('cod_postal')->nullable();
             $table->string('email')->nullable();
             $table->string('telefono')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

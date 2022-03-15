@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Linea;
 use App\Models\Producto;
@@ -71,7 +72,8 @@ class LineaController extends Controller
     {
         $factura=Factura::find($linea->factura_numero);
         $productos=Producto::all();
-        return view('factura',['factura'=>$factura,'productos'=>$productos,'lineaEdit'=>$linea]);
+        $clientes=Cliente::all();
+        return view('factura.factura',['factura'=>$factura,'productos'=>$productos,'clientes'=>$clientes,'lineaEdit'=>$linea]);
     }
 
     /**
@@ -92,7 +94,7 @@ class LineaController extends Controller
 
         $factura=Factura::find($request->factura_numero);
         $productos=Producto::all();
-        return view('factura',['factura'=>$factura,'productos'=>$productos]);
+        return view('factura.factura',['factura'=>$factura,'productos'=>$productos]);
     }
 
     /**

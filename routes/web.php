@@ -53,6 +53,3 @@ Route::get('/register/verify/{code}',[RegisterController::class,'verify'])->name
 Route::get('/recovery',[RecoveryPasswordController::class,'index'])->name('recovery.index');
 Route::post('/recovery',[RecoveryPasswordController::class,'sendToken'])->name('recovery.sendToken');
 Route::get('/recovery/{token}',[RecoveryPasswordController::class,'create'])->name('recovery.create');
-
-// Route::get('/tiendas/{tienda}/edit',[TiendaController::class,'edit'])->middleware('auth')->name('tienda.edit');
-// Route::put('/tiendas/{tienda}',[TiendaController::class,'update'])->middleware('auth')->name('tienda.update');

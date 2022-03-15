@@ -15,11 +15,12 @@
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
+                <th>Avatar</th>
                 <th>ID</th>
                 <th>NIF</th>
                 <th>Nombre</th>
                 <th>Dirección</th>
-                <th>Pobliación</th>
+                <th>Población</th>
                 <th>Provincia</th>
                 <th>CP</th>
                 <th>Email</th>
@@ -29,6 +30,13 @@
         </thead>
         @foreach($clientes as $cliente)
             <tr>
+                <td>
+                    @if(!empty($cliente->avatar))
+                        <img src="{{ asset('storage/images/'.$cliente->avatar) }}" width="60" height="54" class="d-inline-block align-text-top">
+                    @else
+                        <img src="{{ asset('img/avatar.png') }}" width="60" height="54" class="d-inline-block align-text-top">
+                    @endif
+                </td>
                 <td>{{ $cliente->id }}</td>
                 <td>{{ $cliente->nif }}</td>
                 <td>{{ $cliente->nombre }}</td>

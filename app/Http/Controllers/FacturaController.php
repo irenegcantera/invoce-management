@@ -17,7 +17,7 @@ class FacturaController extends Controller
     public function index()
     {
         $facturas=Factura::paginate(10);
-        return view('lista',compact('facturas'));
+        return view('factura.lista',compact('facturas'));
     }
 
     /**
@@ -28,7 +28,7 @@ class FacturaController extends Controller
     public function create()
     {
         $clientes = Cliente::all();
-        return view('create',compact('clientes'));
+        return view('factura.create',compact('clientes'));
     }
 
     /**
@@ -39,7 +39,22 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $factura = new Factura();
+        $cliente=Cliente::find($request->nombre);
+
+        $factura->fecha = $request->fecha;
+        $factura-> nombre = $cliente->nombre;
+        $factura-> direccion = $request->direccion;
+        $factura->cpostal = $request->cpostal;
+        $factura->poblacion = $request->poblacion;
+        $factura->provincia = $request->provincia;
+        $factura->telefono = $request->telefono;
+        $factura->cliente_id = $request->nombre;
+        $factura->save();
+
+        $productos=Producto::all();
+        $clientes=Cliente::all();
+        return redirect()->route('facturas.edit', compact('factura','productos','clientes'));
     }
 
     /**
@@ -63,7 +78,8 @@ class FacturaController extends Controller
     {
         $factura=Factura::find($num);
         $productos=Producto::all();
-        return view('factura',['factura'=>$factura,'productos'=>$productos]);
+        $clientes=Cliente::all();
+        return view('factura.factura',['factura'=>$factura,'productos'=>$productos,'clientes'=>$clientes]);
     }
 
     /**

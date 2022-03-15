@@ -47,6 +47,15 @@ class ClienteController extends Controller
         $cliente->email = $request->email;
         $cliente->telefono = $request->telefono;
 
+        if($request->hasFile('avatar')){
+            if($request->file('avatar')->isValid()){
+                // $nameImage = $request->nif.'+'.$request->nombre.'.'.$request->file('avatar')->getClientOriginalExtension();
+                $request->file('avatar')
+                        ->storeAs('public/images/', $request->file('avatar')->getClientOriginalName());
+                $cliente->avatar = $request->file('avatar')->getClientOriginalName();
+            }
+        }
+
         $cliente->save();
 
         return redirect()->route('clientes.index');

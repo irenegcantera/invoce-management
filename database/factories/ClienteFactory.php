@@ -14,7 +14,7 @@ class ClienteFactory extends Factory
     public function definition()
     {
         return [
-            'nif'=>$this->faker->numerify('#########'),
+            'nif'=>$this->faker->regexify('[0-9]{8}[A-Z]'),
             'nombre'=>$this->faker->word(),
             'direccion'=>$this->faker->sentence(),
             'poblacion'=>$this->faker->word(),

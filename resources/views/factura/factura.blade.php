@@ -8,8 +8,9 @@
     <div class="row justify-content-between">
         <div class="col-xl-5">
             <h4>Datos factura</h4>
-            <form action="" method="post">
+            <form action="{{ route('facturas.update',$factura) }}" method="post">
                 @csrf
+                @method('put')
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label fw-bold" for="numero">Número</label>
@@ -22,32 +23,37 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-8">
-                        <label class="form-label fw-bold" for="nombre">Nombre</label> 
-                        <input class="form-control form-control-sm" type="text" name='nombre' size="50" value="{{$factura->nombre}}"/>
+                        <label class="form-label fw-bold" for="nombre_cliente">Nombre</label> 
+                        <select class="form-control form-control-sm" name='nombre_cliente' id='nombre_cliente' >
+                            <option value="{{ $factura->nombre }}" selected>{{ $factura->nombre }}</option>
+                            @foreach ($clientes as $cliente)
+                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="col">
                         <label class="form-label fw-bold" for="telefono">Teléfono</label> 
-                        <input class="form-control form-control-sm" type='text' name='telefono' value="{{$factura->telefono}}"/>
+                        <input class="form-control form-control-sm" type='text' name='telefono' id="telefono" value="{{$cliente->telefono}}"/>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-9">
                         <label class="form-label fw-bold" for="direccion">Dirección</label> 
-                        <input class="form-control form-control-sm" type="text" name='direccion' size="50" value="{{$factura->direccion}}"/>
+                        <input class="form-control form-control-sm" type="text" name='direccion' id='direccion' size="50" value="{{$cliente->direccion}}"/>
                     </div>
                     <div class="col">
-                        <label class="form-label fw-bold" for="cpostal">CP</label>
-                        <input class="form-control form-control-sm" type="text" name='cpostal' size=5 value="{{$factura->cpostal}}"/>
+                        <label class="form-label fw-bold" for="cod_postal">CP</label>
+                        <input class="form-control form-control-sm" type="text" name='cod_postal' id='cod_postal' size=5 value="{{$cliente->cod_postal}}"/>
                     </div>
                 </div>
                 <div class="row mb-2">
                     <div class="col">
                         <label class="form-label fw-bold" for="poblacion">Población</label>
-                        <input class="form-control form-control-sm" type="text" name='poblacion' value="{{$factura->poblacion}}"/>
+                        <input class="form-control form-control-sm" type="text" name='poblacion' id='poblacion' value="{{$cliente->poblacion}}"/>
                     </div>
                     <div class="col">  
                         <label class="form-label fw-bold" for="provincia">Provincia</label>
-                        <input class="form-control form-control-sm" type="text" name='provincia' value="{{$factura->provincia}}"/>
+                        <input class="form-control form-control-sm" type="text" name='provincia' id='provincia' value="{{$cliente->provincia}}"/>
                     </div>
                 </div>
                 <input class="btn btn-success btn-sm fw-bold" type='submit' name="Actualizar" value='Actualizar'/><br>
@@ -127,9 +133,11 @@
                 </form>
             @endif
         </div>
-
+        
         <div class="col-xl-7">
+            <br>
             <a class="btn btn-secondary btn-sm fw-bold" href="{{ route('facturas.index') }}">Volver al listado</a>
+            <a class="btn btn-primary fw-bold float-end" href="">Generar PDF</a>
             <br><br>
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
@@ -171,7 +179,6 @@
                         <td>{{ $factura->getImporteTotal() + ($factura->getImporteTotal()*021) }} €</td>
                     </tr>
                 </tfoot>
-                
             </table>
         </div>
     </div>    
@@ -179,21 +186,49 @@
 @endsection
 
 @section('scripts')
+{{-- CLIENTES --}}
 <script>
     $(document).ready(function(){
-            
-        $("#producto_id").change(function(){
-    
+        $("#nombre_cliente").change(function(){
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-	
+            var id=$("select[name=nombre_cliente]").val();
+            if (id!=0){
+            $.ajax({
+                url: '{{ route('ajax.cliente') }}',
+                method:'post',
+                data:{'id':id},
+                success:function(data){
+                    var datos=JSON.parse(data);
+                    $("#telefono").val(datos.telefono);
+                    $("#direccion").val(datos.direccion);
+                    $("#cod_postal").val(datos.cod_postal);
+                    $("#poblacion").val(datos.poblacion);
+                    $("#provincia").val(datos.provincia);
+                }
+            });
+            }else{
+                alert("Cliente no seleccionado");
+            }
+        });
+    });
+</script>
+{{-- LINEAS DE PRODUCTOS --}}
+<script>
+    $(document).ready(function(){
+        $("#producto_id").change(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             var id=$("select[name=producto_id]").val();
             if (id!=0){
             $.ajax({
-                url: '{{route('ajax.producto')}}',
+                url: '{{ route('ajax.producto') }}',
                 method:'post',
                 data:{'id':id},
                 success:function(data){
@@ -207,7 +242,6 @@
             }else{
                 alert("Producto no seleccionado");
             }
-            
         });
     });
 </script>

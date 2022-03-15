@@ -15,10 +15,10 @@ class FacturaSeeder extends Seeder
      */
     public function run()
     {
-        Factura::factory(20)->create();
+        Factura::factory(10)->create();
         $facturas=Factura::all('numero');
-        for ($i = 0; $i < 150; $i++){
-            Linea::factory(1)->create(['factura_numero'=>$facturas[random_int(0,19)]]);
+        for ($i = 0; $i < 50; $i++){
+            Linea::factory(1)->create(['factura_numero'=>$facturas[random_int(0,9)]]);
         }        
     }
 }
