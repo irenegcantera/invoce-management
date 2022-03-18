@@ -8,7 +8,8 @@
     <div class="row justify-content-between">
         <div class="col-xl-5">
             <h4>Datos factura</h4>
-            <form action="{{ route('facturas.update',$factura) }}" method="post">
+            
+            <form action="{{ route('facturas.update', $factura->numero) }}" method="post">
                 @csrf
                 @method('put')
                 <div class="row mb-2">
@@ -24,13 +25,14 @@
                 <div class="row mb-2">
                     <div class="col-8">
                         <label class="form-label fw-bold" for="nombre_cliente">Nombre</label> 
-                        <select class="form-control form-control-sm" name='nombre_cliente' id='nombre_cliente' >
-                            <option value="{{ $factura->nombre }}" selected>{{ $factura->nombre }}</option>
+                        <select class="form-control form-control-sm" name='id_cliente' id='nombre_cliente' >
+                            <option value="{{ $factura->nombre }}">{{ $factura->nombre }}</option>
                             @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}">{{ $cliente->nombre }}</option>
-                            @endforeach
+                                <option value="{{ $cliente->id }}">{{$cliente->nombre }}</option>
+                            @endforeach                       
                         </select>
                     </div>
+                    
                     <div class="col">
                         <label class="form-label fw-bold" for="telefono">Teléfono</label> 
                         <input class="form-control form-control-sm" type='text' name='telefono' id="telefono" value="{{$cliente->telefono}}"/>
@@ -56,7 +58,7 @@
                         <input class="form-control form-control-sm" type="text" name='provincia' id='provincia' value="{{$cliente->provincia}}"/>
                     </div>
                 </div>
-                <input class="btn btn-success btn-sm fw-bold" type='submit' name="Actualizar" value='Actualizar'/><br>
+                <input class="btn btn-success btn-sm fw-bold" type='submit' name="Actualizar" value='Actualizar'><br>
             </form>
             <br>
 
@@ -137,7 +139,7 @@
         <div class="col-xl-7">
             <br>
             <a class="btn btn-secondary btn-sm fw-bold" href="{{ route('facturas.index') }}">Volver al listado</a>
-            <a class="btn btn-primary fw-bold float-end" href="">Generar PDF</a>
+            {{-- <a class="btn btn-primary fw-bold float-end" href="#">Generar PDF</a> --}}
             <br><br>
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
@@ -176,7 +178,7 @@
                     <tr>
                         <td>TOTAL FACTURA</td>
                         <td colspan="2">IVA 21%</td>
-                        <td>{{ $factura->getImporteTotal() + ($factura->getImporteTotal()*021) }} €</td>
+                        <td>{{ $factura->getImporteTotal() + ($factura->getImporteTotal()*0.21) }} €</td>
                     </tr>
                 </tfoot>
             </table>
@@ -195,7 +197,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var id=$("select[name=nombre_cliente]").val();
+            var id=$("select[name=id_cliente]").val();
             if (id!=0){
             $.ajax({
                 url: '{{ route('ajax.cliente') }}',

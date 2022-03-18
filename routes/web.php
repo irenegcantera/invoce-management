@@ -27,7 +27,9 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('auth')->name('home');
 
+// Route::post('/facturas/{factura}/{cliente}',[FacturaController::class,'update'])->middleware('auth')->name('facturas.update');
 Route::resource('facturas',FacturaController::class)->middleware('auth');
+
 Route::resource('lineas',LineaController::class)->middleware('auth');
 Route::post('ajax/productos',[AjaxController::class,'producto'])->middleware('auth')->name('ajax.producto');
 Route::post('ajax/clientes',[AjaxController::class,'cliente'])->middleware('auth')->name('ajax.cliente');
@@ -50,6 +52,6 @@ Route::post('/register',[RegisterController::class,'store'])->name('register.sto
 Route::get('/register/verify/{code}',[RegisterController::class,'verify'])->name('register.verify');
 
 //RECUPERACIÓN CONTRASEÑAS
-Route::get('/recovery',[RecoveryPasswordController::class,'index'])->name('recovery.index');
-Route::post('/recovery',[RecoveryPasswordController::class,'sendToken'])->name('recovery.sendToken');
-Route::get('/recovery/{token}',[RecoveryPasswordController::class,'create'])->name('recovery.create');
+// Route::get('/recovery',[RecoveryPasswordController::class,'index'])->name('recovery.index');
+// Route::post('/recovery',[RecoveryPasswordController::class,'sendToken'])->name('recovery.sendToken');
+// Route::get('/recovery/{token}',[RecoveryPasswordController::class,'create'])->name('recovery.create');

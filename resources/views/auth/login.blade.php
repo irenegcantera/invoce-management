@@ -35,7 +35,7 @@
         </div>
         <button type="submit" class="btn btn-primary">Entrar</button>
         <a class="btn btn-outline-secondary" href="{{ route("register.create")}}">Registarse</a>
-        <a href="{{ route("recovery.index") }}">¿Olvidates la contraseña?</a>
+        {{-- <a href="{{ route("recovery.index") }}">¿Olvidates la contraseña?</a> --}}
     </form>
   </div>
 </body>

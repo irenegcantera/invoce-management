@@ -89,9 +89,26 @@ class FacturaController extends Controller
      * @param  int  $num
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $num)
+    public function update(Request $request,$numero)
     {
-        //
+        $factura = Factura::find($numero);
+        $cliente = Cliente::find($request->id_cliente);
+
+        $factura->fecha = $request->fecha;
+        $factura-> nombre = $cliente->nombre;
+        $factura-> direccion = $cliente->direccion;
+        $factura->cpostal = $cliente->cod_postal;
+        $factura->poblacion = $cliente->poblacion;
+        $factura->provincia = $cliente->provincia;
+        $factura->telefono = $cliente->telefono;
+        $factura->cliente_id = $request->id_cliente;
+        
+        // var_dump($factura);
+        $factura->update();
+
+        $productos=Producto::all();
+        $clientes=Cliente::all();
+        return redirect()->route('facturas.edit', compact('factura','productos','clientes'));
     }
 
     /**
